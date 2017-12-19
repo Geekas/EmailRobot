@@ -4,9 +4,11 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -30,9 +32,12 @@ public class ConnectGmailJFrame extends JFrame {
 	private JTextField userF;
 	private JPasswordField passF;
 	// Button
-	private JButton submit;
+	private JButton submit;	
+	
+	private WorkWithSelenium ws;
 
-	public ConnectGmailJFrame() {
+	public ConnectGmailJFrame(WorkWithSelenium ws) {
+		this.ws = ws;
 		configLabels();
 		configFields();
 		configButtons();
@@ -77,10 +82,22 @@ public class ConnectGmailJFrame extends JFrame {
 	private void configButtons() {
 		submit = new JButton(Const.bSubmit);
 		submit.addActionListener(e -> {
-			this.dispose();
+			if (!userF.getText().isEmpty()&& passF.getPassword().length != 0){
+				ws = new WorkWithSelenium();
+				try {
+					ws.logInWithData(userF.getText(), passF.getPassword());
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				new MainJFrame(ws);
+				this.dispose();
+			}
+			else {
+				JOptionPane.showMessageDialog(null, Const.errorText, "Error", JOptionPane.ERROR_MESSAGE);
+			}
 		});
 	}
-
 	private void configJFrame() {
 		this.add(mainPanel);		
 		this.setTitle(Const.titleConGmail);

@@ -1,5 +1,8 @@
 package ramunas.Alksnys;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
 public final class Const {
 	
 	private Const() {
@@ -21,5 +24,16 @@ public final class Const {
 	public static String letterSubText = "Letters subject: ";
 	public static String letterContText = "Write your letter content here: ";
 	public static String chosenFileL = "Chosen files: ";
-	
+	public static String popUpTitle = "Gmail connection establishment";
+	public static String questText = "If you are sign-in still will need to resign \nchoose option for you best";
+	public static String noConnAutoText = "Connec automatic with your given data";
+	public static String noConnManText = "Connect manual by me";
+	public static String yesText = "Yes, I am connected";
+	public static String url = "https://www.google.lt";	
+	public static String errorText = "Please fill all the fields!";	
+	public static String reminderText = "Please do not close your new opened window when log in to gmail, because this page works on our server";	
+	public static String noAtachFileText = "You didnt choose any file";	
+	public static String noContactFileText = "You didnt choose any contact file";
+	public static String selectText = "Select file you want to atach";
+	public static String selectContText = "Select contact file";	
 }
