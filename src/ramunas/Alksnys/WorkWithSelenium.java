@@ -11,12 +11,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.swing.JTextArea;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -24,11 +24,23 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+//import org.openqa.selenium.By;
+//import org.openqa.selenium.JavascriptExecutor;
+//import org.openqa.selenium.NoSuchElementException;
+//import org.openqa.selenium.WebDriver;
+//import org.openqa.selenium.WebElement;
+//import org.openqa.selenium.chrome.ChromeDriver;
+//import org.openqa.selenium.firefox.FirefoxDriver;
+//import org.openqa.selenium.support.ui.ExpectedCondition;
+//import org.openqa.selenium.support.ui.ExpectedConditions;
+//import org.openqa.selenium.support.ui.WebDriverWait;
+
 public class WorkWithSelenium {
 	private WebDriver driver;
 	private List<String[]> contactList = new ArrayList<>();
 
 	public WorkWithSelenium() {
+		System.setProperty("webdriver.gecko.driver","C:\\Users\\Romarijo\\workspace\\EmailRobot\\geckodriver.exe");
 		driver = new FirefoxDriver();
 	}
 
@@ -48,23 +60,48 @@ public class WorkWithSelenium {
 	}
 
 	public void startSendEmails(String subject, String emalContent, FileManager manager, JTextArea proccessLog) {
+		//checkContents(subject, emalContent);
+		if (subject.isEmpty()) {
+			subject = Const.defaultSubjText;
+		}
+		if (emalContent.isEmpty() || emalContent.equals("")) {
+			emalContent = Const.defaultContText;
+		}
+		System.out.println("Subject: " + subject);
+		System.out.println("Content: " + emalContent);
+		int index = -1;
 		List<String> contacts = new ArrayList<>();
+		List<String> company = new ArrayList(contacts);
 		try {
 			contacts = new FileReader().getTestData(manager.getContFile());
-			filterData(contacts);
+			filterData(contacts, company);
 			// System.out.println(Arrays.deepToString(contactList.toArray()));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		proccessLog.append("Start sendind emails, Subject is: " + subject + "\nEmail content: " + emalContent);
+		System.out.println("Start sendind emails, Subject is: " + subject + "\nEmail content: " + emalContent);
 		for (String email[] : contactList) {
+			proccessLog.append("\nSending to  Company: " + company.get(++index));
+			System.out.println("\nSending to  Company: " + company.get(index));
 			enterComposeEmail();
-			enterReceiver(email[email.length-1]);
+			enterReceiver(email[email.length - 1]);
 			enterEmailContent(emalContent);
 			enterSubject(subject);
 			atachFiles(manager.getList());
 			send();
 		}
+	}
+
+	private void checkContents(String subject, String emalContent) {
+		if (subject.isEmpty()) {
+			subject = Const.defaultSubjText;
+		}
+		if (emalContent.isEmpty() || emalContent.equals("")) {
+			emalContent = Const.defaultContText;
+		}
+
 	}
 
 	private void enterEmailContent(String emalContent) {
@@ -74,7 +111,7 @@ public class WorkWithSelenium {
 			e1.printStackTrace();
 		}
 		driver.findElement(By.xpath(".//*[@class='Am Al editable LW-avf']")).sendKeys(emalContent);
-		
+
 	}
 
 	private void atachFiles(List<String> list) {
@@ -86,7 +123,7 @@ public class WorkWithSelenium {
 			Robot robot;
 			try {
 				try {
-					Thread.sleep(3000);
+					Thread.sleep(10000);
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
@@ -103,23 +140,23 @@ public class WorkWithSelenium {
 				robot.keyPress(KeyEvent.VK_ENTER);
 				robot.keyRelease(KeyEvent.VK_ENTER);
 				try {
-					Thread.sleep(4000);
+					Thread.sleep(10000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			} catch (AWTException e) {
 				e.printStackTrace();
 			}
-			// try {
-			// Thread.sleep(3000);
-			// } catch (InterruptedException e) {
-			// e.printStackTrace();
-			// }
+//			 try {
+//			 Thread.sleep(10000);
+//			 } catch (InterruptedException e) {
+//			 e.printStackTrace();
+//			 }
 		}
 
 	}
 
-	private void filterData(List<String> contacts) {
+	private void filterData(List<String> contacts, List<String> company) {
 		List<String> tempLines = new ArrayList<>();
 		for (String line : contacts) {
 			String words[] = line.split(" ");
@@ -127,10 +164,21 @@ public class WorkWithSelenium {
 				tempLines.add(line);
 			} else {
 				contactList.add(words);
+				company.add(makeString(words));
 			}
 
 		}
 
+	}
+
+	private String makeString(String[] words) {
+		List<String> wordsList = new ArrayList<>(Arrays.asList(words));
+		wordsList.remove(wordsList.size()-1);
+		StringBuilder sb = new StringBuilder();		
+		for (String word : wordsList) {
+			sb.append(word).append(" ");
+		}
+		return sb.toString();
 	}
 
 	private void send() {

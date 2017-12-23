@@ -35,5 +35,9 @@ public final class Const {
 	public static String noAtachFileText = "You didnt choose any file";	
 	public static String noContactFileText = "You didnt choose any contact file";
 	public static String selectText = "Select file you want to atach";
-	public static String selectContText = "Select contact file";	
+	public static String selectContText = "Select contact file";
+	public static String defaultSubjText = "Del praktikos";
+	public static String defaultContText = "Laba diena rasau noredamas aplikuoti i jusu imone kaip praktika arba darba. Prisegu CV ir motyvacini. Geros dienos :)";
+	
+	
 }

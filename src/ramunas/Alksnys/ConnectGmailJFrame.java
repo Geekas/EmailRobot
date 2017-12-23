@@ -1,6 +1,7 @@
 package ramunas.Alksnys;
 
 import javax.swing.JButton;
+import java.nio.file.Files;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -8,6 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
 
 
 import java.awt.Dimension;
@@ -20,7 +22,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.lang.reflect.Field;
+import java.nio.file.Paths;
 import java.text.FieldPosition;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConnectGmailJFrame extends JFrame {
 	// Panel
@@ -43,6 +48,8 @@ public class ConnectGmailJFrame extends JFrame {
 		configButtons();
 		configMainPanel();
 		configJFrame();
+		List<String> records = new ArrayList();
+		records = Files.readAllLines(Paths.get(""));
 	}
 
 	private void configMainPanel() {

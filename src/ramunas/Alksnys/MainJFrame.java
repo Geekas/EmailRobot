@@ -152,9 +152,9 @@ public class MainJFrame extends JFrame {
 	}
 
 	private void startSend() {
-		this.setState(this.ICONIFIED);
+		this.setState(JFrame.ICONIFIED);
 		ws.startSendEmails(subjectField.getText(),letterContArea.getText() , manager, proccessLog);
-		this.setState(this.NORMAL);
+		this.setState(JFrame.NORMAL);
 	}
 
 	private void selectFile() {
