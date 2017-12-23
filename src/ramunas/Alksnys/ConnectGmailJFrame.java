@@ -1,7 +1,6 @@
 package ramunas.Alksnys;
 
 import javax.swing.JButton;
-import java.nio.file.Files;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -47,9 +46,7 @@ public class ConnectGmailJFrame extends JFrame {
 		configFields();
 		configButtons();
 		configMainPanel();
-		configJFrame();
-		List<String> records = new ArrayList();
-		records = Files.readAllLines(Paths.get(""));
+		configJFrame();		
 	}
 
 	private void configMainPanel() {
